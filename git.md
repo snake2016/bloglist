@@ -1,5 +1,5 @@
-Git 简介及常用操作说明
- ==========
+## Git 简介及常用操作说明
+ ----
 
 ## git 与 svn 区别
 svn是集成式开发，依赖于企业的中央服务器，速度慢，而且必须联网才能使用，git是分布式的；
@@ -167,3 +167,14 @@ README.md
 
 Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快。
 `https://github.com/michaelliao/gitskills.git`这个地址也是可以的；
+
+
+####  通常使用方法
+1. 远程创造git仓库
+1. 本地mkdir创建目录，git init
+1. 本地远程建立关联，git remote add origin git@github.com:snake2016/rep-name.git
+1. git add . git commit  -m
+1. git fetch origin 将远程主机的更新拉取到本地
+1. git pull origin master 拉取远程分支代码到本地
+1. git push -u origin master 
+1. 后续本地有修改时直接git push origin master:master
