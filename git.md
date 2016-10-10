@@ -177,3 +177,85 @@ Git支持多种协议，包括https，但通过ssh支持的原生git协议速度
 1. git pull origin master 拉取远程分支代码到本地
 1. git push -u origin master 
 1. 后续本地有修改时直接git push origin master:master
+
+
+
+
+
+----
+## 分支管理
+#### 分支的创建与合并
+1. 创建分支`dev`并切换到该分支
+```
+$ git checkout -b dev
+```
+`git checkout`命令加上`-b`参数表示创建并切换，相当于以下两条命令：
+
+```
+$ git branch dev
+$ git checkout dev
+```
+在本地创建和远程分支对应的分支，使用`git checkout -b branch-name origin/branch-name`，本地和远程分支的名称最好一致；
+
+2. 查看分支是`git branch`命令，所有的分支都会被列出，当前分支前加`*`号；
+
+```
+$ git branch
+* dev
+  master
+```
+3. `dev`分支工作完成，切回`master`分支时
+```
+$ git checkout master
+```
+4. `git merge`命令用于合并指定分支到当前分支，现在时再`master`分支上，只需
+
+```
+$ git merge dev
+```
+请注意有时会加上`--no-ff`参数，表示禁用`Fast forward`，因为通常合并分支时，如果可能，Git会用`Fast forward`模式，但这种模式下，删除分支后，会丢掉分支信息。
+
+```
+$ git merge --no-ff -m "merge with no-ff" dev
+```
+因为本次合并要创建一个新的commit，所以加上`-m`参数，把commit描述写进去;
+5. 合并完成以后，可以放心的删除`dev`分支，此时再通过`git branch`命令查看就只有`master`一个分支了；
+
+```
+$ git branch -d dev
+```
+##### 正常企业团队内部合作分支如下：
+![image](http://www.liaoxuefeng.com/files/attachments/001384909239390d355eb07d9d64305b6322aaf4edac1e3000/0)
+
+master分支应该是非常稳定的，仅用来发布新版本，每个人都在dev分支上干活，有自己的分支，时不时地往dev分支上合并就可以了。
+#### 分支冲突问题
+
+当分支和主干都有提交，git无法快速自动合并时，须先手动解决冲突后，再提交，合并完成。
+
+用`git log --graph`命令可以看到分支合并图;
+
+#### bug 分支管理
+工作进行一半，需紧急处理其他事情时，可先将当前工作现场“储藏”起来，等以后恢复现场后继续工作；
+
+```
+$ git stash
+```
+需要恢复时，先用`git stash list`查看，然后恢复，有两个办法：
+1. 用`git stash apply`恢复，但是恢复后，`stash`内容并不删除，你需要用`git stash drop`来删除；
+
+2. 用`git stash pop`，恢复的同时把`stash`内容也删了：
+
+#### 新功能Feature分支管理
+开发一个新feature，最好新建一个分支；
+
+如果要丢弃一个没有被合并过的分支，可以通过`git branch -D <name>`强行删除。
+
+#### 多人协作工作模式
+1. 首先，可以试图用`git push origin branch-name`推送自己的修改；
+1. 如果推送失败，则因为远程分支比你的本地更新，需要先用`git pull`试图合并；
+1. 如果合并有冲突，则解决冲突，并在本地提交；
+1. 没有冲突或者解决掉冲突后，再用`git push origin branch-name`推送就能成功！
+1. 如果`git pull`提示`“no tracking information”`，则说明本地分支和远程分支的链接关系没有创建，用命令`git branch --set-upstream branch-name origin/branch-name`。
+
+
+
