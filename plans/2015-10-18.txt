@@ -1,0 +1,29 @@
+1. haschange/window.putstate getstate    caniuse    35选7 无刷新页面回退
+2.dom 性能优化 
+  js dom l两座孤岛   console.time('hello')...code....console.timeEnd('hello')  
+  减少dom操作 克隆》queryselectall》
+  mvc 前端模板 jq tmp() 》事件委托》dom与浏览器 重排和重绘，最后append》dom 合并 利用CSStext 》缓存布局信息》文档碎片creatDocumentFragment()
+3. 控制台语句 
+   console.log/dir(输出所有信息，常用于对象)/dirxml(html结构)/error/warn/group~groupEnd/time~timeEnd/assert(断言)/trace(调用倒序)/profile~profileEnd(性能，同概况)/
+4. js 跨域 ajax 不能跨越，安全策略 不同域名指向同一iP也不行
+   子域和主域间同时加上document.domain="a.com"; a.com 主域名
+   服务器代理的方式，缺点增大服务器压力
+   jsonp script标签
+   window.location.hash
+   window.name
+5. iframe  
+   父》子  contentWindow(chrome 为了安全起见，必须在服务器环境下才有效)/contentDocument(IE6,7不支持) 
+   子》父 window.parent(chrome 为了安全起见，必须在服务器环境下才有效)  window.top(最顶层)
+    onload 事件在ie下必须用事件绑定的写法  attachEvent("onload",function(){})
+
+6.快速排序： 
+   找一个基准点，建立两个数组，分别存储左右两边的值（左边是小于基准点的，右边是大于基准点的），递归
+7.函数声明和函数表达式：
+  命名函数表达式var a=function aaa(){}，函数表达式var a=function(){}，其他形式的如(function(){})，!function(){}，+，-，~，
+  7.1函数表达式后面加一个括号可以直接执行，函数声明则不可以
+  7.2函数声明提前被预解析
+8.事件委托 ：提高性能，新添加的元素也同样具备之前的事件
+   event:事件源  ev || window.event   
+   target ：ev.target || ev.srcElement
+
+《miaov基础javascript视频知识点汇总》

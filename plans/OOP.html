@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Object Oriented Programming</title>
+	<style>
+		iframe{display:none;}
+		p{text-align: center;}
+	</style>
+</head>
+<body>
+	<iframe  style="display:none;" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=417596830&auto=1&height=66"></iframe>
+	<p>window系统请直接F12查看源码（Mac  command+option+i）</p>
+	<script>
+	// 面向对象编程/廖雪峰
+	// http://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000/001434499763408e24c210985d34edcabbca944b4239e20000
+	 /*
+	 示例一：__proto__************************************************************************************
+	 */
+		// 有一个student的对象
+		var Student = {
+		    name: 'Robot',
+		    height: 1.2,
+		    run: function () {
+		        console.log(this.name + ' is running...');
+		    }
+		};
+		var xiaoming={
+			name:"xiaoming"
+		};
+		// 将xiaoming的原型指向对象Student，此次注意proto的前后下划线在写法上是两个_
+		xiaoming.__proto__=Student;
+
+		xiaoming.name; // '小明'
+		xiaoming.run(); // 小明 is running...
+
+		// 若此时再创建一个bird对象
+		var Bird={
+			fly:function(){
+				console.log(this.name + ' is flying...');
+			}
+		};
+		// 然后将xiaoming的原型指向该对象，此时xiaoming就又有了fly的方法
+		xiaoming.__proto__=Bird;
+
+		xiaoming.fly(); // 小明 is flying...
+	
+		/* 请注意！！！
+		 该段代码仅用于演示目的。在编写JavaScript代码时，不能直接用obj.__proto__去改变一个对象的原型，低版本的IE也无法使用__proto__。
+		 */
+
+	/*
+	 示例二：Object.create************************************************************************************
+	 	    Object.create()传入一个原型对象，并创建一个基于该原型的新对象，新对象什么属性都没有，只继承原型对象方法
+	*/
+		// 原型对象
+		var Student = {
+		    name: 'Robot',
+		    height: 1.2,
+		    run: function () {
+		        console.log(this.name + ' is running...');
+		    }
+		};
+
+		function Createstudent(name){
+			// 基于Student原型创建一个新对象:
+			var s=Object.create(Student);
+			s.name=name;
+			return s;
+		}
+
+		var xiaoming=Createstudent("小明");
+		xiaoming.run();// 小明 is running...	
+		// 检验xiaoming的原型是否指向了原型对象，答案是true
+		xiaoming.__proto__ === Student; // true
+
+	/*
+	 示例三：原型继承************************************************************************************
+	 	    通过一个空函数的形式
+	*/	
+		function inherits(child,parent){
+		     var F=function(){};
+		     F.prototype=parent.prototype;
+		     child.prototype=new F();
+		     child.prototype.constructor=child;
+		}
+
+
+		function Comm_student(props){
+			this.name=props.name||"unnamed";
+		}
+		Comm_student.prototype.sayhello=function(){
+			alert('Hello, '+this.name+'!');
+		}
+		function Primary_student(props){
+			// 实现属性的继承
+			Comm_student.call(this,props);
+			this.grade=props.grade||1;
+		}
+		// 实现原型的继承
+		inherits(Primary_student,Comm_student);
+		Primary_student.prototype.getGrade=function(){
+			return this.grade;
+		}
+		var xiaoxiaoming=new Primary_student({
+			name:"xiaoxiaoming",
+			grade:100
+		})
+		xiaoxiaoming.sayhello(); // 'Hello, xiaoxiaoming!'
+		xiaoxiaoming.getGrade(); //100
+
+	/*
+	 示例四：Class继承************************************************************************************
+	*/
+		Class Comm_student{
+			constructor(name){
+				this.name=name;
+			}
+			sayhello(){
+				alert('Hello, '+this.name+'!');
+			}
+		}
+
+		Class Primary_student extends Comm_student{
+			constructor(name,grade){
+				// 用super调用父类的构造方法!
+				super(name);
+				this.grade=grade;
+			}
+			myGrade() {
+			         alert('I am at grade ' + this.grade);
+			}
+		}
+		// 不是所有的主流浏览器都支持ES6的class，所以以上代码需在支持的环境下执行
+	</script>
+</body>
+</html>
